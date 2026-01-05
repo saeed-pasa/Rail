@@ -17,6 +17,7 @@ export const CityFilter = ({ cities, selectedCity, onCityChange }: CityFilterPro
         color: 'var(--text-primary)',
         fontSize: '0.9rem',
         minWidth: '200px',
+        maxWidth: '100%',
         cursor: 'pointer'
       }}
     >

@@ -81,6 +81,39 @@ body {
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+    height: calc(100vh - 70px);
+  }
+  
+  .header {
+    padding: 0.75rem 1rem;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .header h1 {
+    font-size: 1.25rem;
+  }
+  
+  .header-controls {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .map-container {
+    height: 50vh;
+    padding: 0.5rem;
+  }
+  
+  .sidebar {
+    width: 100% !important;
+    height: 50vh;
+    padding: 0.5rem;
+  }
+}
+
 .map-container {
   flex: 1;
   padding: 1rem;
