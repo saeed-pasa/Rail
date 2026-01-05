@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState, useMemo } from 'react';
+import { Map } from './Map';
+import { StationsList } from './StationsList';
+import { CityFilter } from './CityFilter';
+import { useStations } from './hooks';
+import './App.css';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface Station {
+  id: number;
+  name: string;
+  city: string;
+  lat: number;
+  lng: number;
 }
 
-export default App
+function App() {
+  const { stations, loading, error } = useStations();
+  const [selectedCity, setSelectedCity] = useState('');
+  const [selectedStation, setSelectedStation] = useState<Station | null>(null);
+
+  const cities = useMemo(() => {
+    const uniqueCities = [...new Set(stations.map(station => station.city))];
+    return uniqueCities.sort();
+  }, [stations]);
+
+  const filteredStations = useMemo(() => {
+    return selectedCity ? stations.filter(station => station.city === selectedCity) : stations;
+  }, [stations, selectedCity]);
+
+  const handleStationClick = (station: Station) => {
+    setSelectedStation(station);
+  };
+
+  if (loading) return <div style={{ padding: '20px' }}>Loading stations...</div>;
+  if (error) return <div style={{ padding: '20px', color: 'red' }}>Error: {error}</div>;
+
+  return (
+    <div style={{ padding: '20px' }}>
+      <h1>German Train Stations</h1>
+      
+      <CityFilter 
+        cities={cities}
+        selectedCity={selectedCity}
+        onCityChange={setSelectedCity}
+      />
+      
+      <div style={{ display: 'flex', gap: '20px' }}>
+        <div style={{ flex: 1 }}>
+          <Map stations={filteredStations} selectedStation={selectedStation} />
+        </div>
+        <div style={{ flex: 1 }}>
+          <StationsList stations={filteredStations} onStationClick={handleStationClick} />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default App;
