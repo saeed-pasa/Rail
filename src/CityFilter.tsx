@@ -6,21 +6,26 @@ interface CityFilterProps {
 
 export const CityFilter = ({ cities, selectedCity, onCityChange }: CityFilterProps) => {
   return (
-    <div style={{ marginBottom: '20px' }}>
-      <label htmlFor="city-filter" style={{ marginRight: '10px' }}>Filter by city:</label>
-      <select
-        id="city-filter"
-        value={selectedCity}
-        onChange={(e) => onCityChange(e.target.value)}
-        style={{ padding: '5px', minWidth: '150px' }}
-      >
-        <option value="">All cities</option>
-        {cities.map((city) => (
-          <option key={city} value={city}>
-            {city}
-          </option>
-        ))}
-      </select>
-    </div>
+    <select
+      value={selectedCity}
+      onChange={(e) => onCityChange(e.target.value)}
+      style={{
+        padding: '0.5rem 1rem',
+        borderRadius: '8px',
+        border: '1px solid var(--border)',
+        background: 'var(--bg-primary)',
+        color: 'var(--text-primary)',
+        fontSize: '0.9rem',
+        minWidth: '200px',
+        cursor: 'pointer'
+      }}
+    >
+      <option value="">All Cities ({cities.length + 1})</option>
+      {cities.map((city) => (
+        <option key={city} value={city}>
+          {city}
+        </option>
+      ))}
+    </select>
   );
 };

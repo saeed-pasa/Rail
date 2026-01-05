@@ -17,6 +17,7 @@ function App() {
   const { stations, loading, error } = useStations();
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedStation, setSelectedStation] = useState<Station | null>(null);
+  const [isDark, setIsDark] = useState(false);
 
   const cities = useMemo(() => {
     const uniqueCities = [...new Set(stations.map(station => station.city))];
@@ -31,27 +32,36 @@ function App() {
     setSelectedStation(station);
   };
 
-  if (loading) return <div style={{ padding: '20px' }}>Loading stations...</div>;
-  if (error) return <div style={{ padding: '20px', color: 'red' }}>Error: {error}</div>;
+  if (loading) return <div className="loading">Loading stations...</div>;
+  if (error) return <div className="error">Error: {error}</div>;
 
   return (
-    <div style={{ padding: '20px' }}>
-      <h1>German Train Stations</h1>
+    <div className={`app ${isDark ? 'dark' : 'light'}`}>
+      <header className="header">
+        <h1>🚂 German Rail Stations</h1>
+        <div className="header-controls">
+          <CityFilter 
+            cities={cities}
+            selectedCity={selectedCity}
+            onCityChange={setSelectedCity}
+          />
+          <button 
+            className="theme-toggle"
+            onClick={() => setIsDark(!isDark)}
+          >
+            {isDark ? '☀️' : '🌙'}
+          </button>
+        </div>
+      </header>
       
-      <CityFilter 
-        cities={cities}
-        selectedCity={selectedCity}
-        onCityChange={setSelectedCity}
-      />
-      
-      <div style={{ display: 'flex', gap: '20px' }}>
-        <div style={{ flex: 1 }}>
+      <main className="main-content">
+        <div className="map-container">
           <Map stations={filteredStations} selectedStation={selectedStation} />
         </div>
-        <div style={{ flex: 1 }}>
+        <div className="sidebar">
           <StationsList stations={filteredStations} onStationClick={handleStationClick} />
         </div>
-      </div>
+      </main>
     </div>
   );
 }

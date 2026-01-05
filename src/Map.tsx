@@ -34,24 +34,37 @@ export const Map = ({ stations, selectedStation }: MapProps) => {
   }, [selectedStation]);
 
   return (
-    <MapContainer
-      center={[51.1657, 10.4515]} // Center of Germany
-      zoom={6}
-      style={{ height: '500px', width: '100%' }}
-      ref={mapRef}
-    >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-      />
-      {stations.map((station) => (
-        <Marker key={station.id} position={[station.lat, station.lng]}>
-          <Popup>
-            <strong>{station.name}</strong><br />
-            {station.city}
-          </Popup>
-        </Marker>
-      ))}
-    </MapContainer>
+    <div style={{
+      height: '100%',
+      borderRadius: '12px',
+      overflow: 'hidden',
+      boxShadow: 'var(--shadow)'
+    }}>
+      <MapContainer
+        center={[51.1657, 10.4515]}
+        zoom={6}
+        style={{ height: '100%', width: '100%' }}
+        ref={mapRef}
+      >
+        <TileLayer
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        />
+        {stations.map((station) => (
+          <Marker key={station.id} position={[station.lat, station.lng]}>
+            <Popup>
+              <div style={{ padding: '0.5rem' }}>
+                <strong style={{ display: 'block', marginBottom: '0.25rem' }}>
+                  {station.name}
+                </strong>
+                <span style={{ color: '#666', fontSize: '0.9rem' }}>
+                  {station.city}
+                </span>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
+      </MapContainer>
+    </div>
   );
 };

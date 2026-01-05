@@ -13,27 +13,75 @@ interface StationsListProps {
 
 export const StationsList = ({ stations, onStationClick }: StationsListProps) => {
   return (
-    <div style={{ height: '500px', overflowY: 'auto', border: '1px solid #ccc', padding: '10px' }}>
-      <h3>Stations ({stations.length})</h3>
-      {stations.map((station) => (
-        <div
-          key={station.id}
-          onClick={() => onStationClick(station)}
-          style={{
-            padding: '8px',
-            margin: '4px 0',
-            border: '1px solid #eee',
-            borderRadius: '4px',
-            cursor: 'pointer',
-            backgroundColor: '#f9f9f9'
-          }}
-          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e9e9e9'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f9f9f9'}
-        >
-          <strong>{station.name}</strong>
-          <div style={{ fontSize: '0.9em', color: '#666' }}>{station.city}</div>
-        </div>
-      ))}
+    <div style={{
+      background: 'var(--bg-primary)',
+      borderRadius: '12px',
+      boxShadow: 'var(--shadow)',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
+      <div style={{
+        padding: '1rem',
+        borderBottom: '1px solid var(--border)',
+        background: 'var(--bg-primary)',
+        borderRadius: '12px 12px 0 0'
+      }}>
+        <h3 style={{
+          color: 'var(--text-primary)',
+          fontSize: '1.1rem',
+          fontWeight: '600'
+        }}>
+          Stations ({stations.length})
+        </h3>
+      </div>
+      
+      <div style={{
+        flex: 1,
+        overflowY: 'auto',
+        maxHeight: 'calc(100vh - 160px)',
+        padding: '0.5rem'
+      }}>
+        {stations.map((station) => (
+          <div
+            key={station.id}
+            onClick={() => onStationClick(station)}
+            style={{
+              padding: '1rem',
+              margin: '0.5rem',
+              borderRadius: '8px',
+              cursor: 'pointer',
+              transition: 'all 0.2s ease',
+              border: '1px solid var(--border)',
+              background: 'var(--bg-secondary)'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'var(--accent)';
+              e.currentTarget.style.color = 'white';
+              e.currentTarget.style.transform = 'translateY(-2px)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'var(--bg-secondary)';
+              e.currentTarget.style.color = 'var(--text-primary)';
+              e.currentTarget.style.transform = 'translateY(0)';
+            }}
+          >
+            <div style={{
+              fontWeight: '500',
+              color: 'var(--text-primary)',
+              marginBottom: '0.25rem'
+            }}>
+              {station.name}
+            </div>
+            <div style={{
+              fontSize: '0.85rem',
+              color: 'var(--text-secondary)'
+            }}>
+              {station.city}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
